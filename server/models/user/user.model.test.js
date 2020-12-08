@@ -4,7 +4,7 @@ const UserModel = require('./user.model');
 describe('User', () => {
     beforeAll( async () => {
         const url = `mongodb://127.0.0.1/ac-membership-test-models`
-        await mongoose.connect(url, { useNewUrlParser: true })
+        await mongoose.connect(url, { useNewUrlParser: true });
     });
     describe('can do basic db operations', () => {
         beforeEach( async (done) => {
@@ -17,9 +17,14 @@ describe('User', () => {
                 name: 'Tim',
                 email: 'timnook@bellmail.com',
                 password: 'supersecretpassword'
-            })
+            });
 
-            expect(user)
+            const allUsers = await UserModel.find({});
+
+            done();
+
+            expect(allUsers).toHaveLength(1);
+            expect(user.createdAt).toBeDefined();
         })
     });
 });
