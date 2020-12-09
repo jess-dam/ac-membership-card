@@ -4,22 +4,22 @@ const UserControl = require('./controllers/user.control');
 const CardControl = require('./controllers/card.control');
 
 // User
-router.get('/');
+router.get('/:id', UserControl.getUser);
 
-router.post('/signup');
+router.post('/signup', UserControl.signUp);
 
-router.put('/signin');
+// router.put('/signin', UserControl.signIn);
 
-router.put('/signout');
+// router.put('/signout', UserControl.signOut);
 
 
 // Card
-router.get('/card');
+router.get('/:id/card', CardControl.getCard);
 
-router.post('/card/register');
+router.post('/:id/card/register', CardControl.createCard);
 
-router.delete('/card/remove');
+router.delete('/:id/card/remove', CardControl.removeCard);
 
-router.put('/card/points');
+router.put('/:id/card/points', CardControl.updatePoints);
 
 module.exports = router;
