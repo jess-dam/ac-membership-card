@@ -1,0 +1,19 @@
+.user-details {
+    text-align: left;
+    padding: 20px;
+    padding-left: 10px;
+    align-self: flex-start;
+}
+
+#profile-wrapper {
+    height: auto;
+    width: 90vw;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    padding: 20px;
+}
+
+.card {
+    align-self: center;
+}

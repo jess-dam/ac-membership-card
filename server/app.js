@@ -2,12 +2,28 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
+const cors = require('cors');
 
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/user');
 
+// Set up a whitelist and check against it:
+var whitelist = ['http://localhost:', 'http://192.168.1.4:']; // for dev purposes we allow all traffic calls on localhost
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 
 var app = express();
+app.use(cors());
+
+app.set('views', __dirname + '/views'); // general config
+app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());

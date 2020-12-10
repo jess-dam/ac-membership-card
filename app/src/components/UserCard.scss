@@ -1,0 +1,19 @@
+.card {
+    min-width: 40vh;
+    max-width: 60vh;
+    min-height: 20vh;
+    max-height: 30vh;
+    align-self: baseline;
+
+    &-details {
+        text-align: left;
+        padding: 60px;
+    }
+
+    &-no-details {
+        text-align: center;
+        padding: 50px;
+    }
+}
+
+

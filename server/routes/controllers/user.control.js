@@ -41,7 +41,6 @@ const getUser = async (req, res, next) => {
 
 const signUp = async (req, res, next) => {
     const { name, email, password } = req.body;
-
     try {
         const user = await User.create({ name, email, password });
 
@@ -51,10 +50,11 @@ const signUp = async (req, res, next) => {
             userId: user._id
         });
 
-    } catch {
+    } catch(err) {
         res.status(500).json({
             status: 'failed',
-            message: 'Could not create user'
+            message: 'Could not create user',
+            error: err
         });
     }
 

@@ -1,0 +1,13 @@
+.sign-up {
+    &-form {
+       &-wrapper {
+            padding: 20px;
+            display: flex;
+            flex-wrap: row;
+        }
+
+        &-section {
+            padding: 10px;
+        }
+    }
+}
