@@ -8,31 +8,38 @@ import { Redirect, Route } from 'react-router-dom';
 
 import axios from 'axios';
 import CurrentUser from './CurrentUser';
+import AuthError from './AuthError';
 
-function SignUp() {
-    const POST_SIGN_UP_PATH = 'http://localhost:3001/user/signup';
+function SignIn() {
+    const PUT_SIGN_IN_PATH = 'http://localhost:3001/user/signin';
 
-    const [ name, setName ] = React.useState('');
     const [ email, setEmail ] = React.useState('');
     const [ password, setPassword ] = React.useState('');
+    const [ error, setError ] = React.useState('');
+
+    const existingUser = () => {
+        setError('User does not exist');
+        return false;
+    }
 
     const handleSubmit = () => {
-        console.log({ name, email, password });
+        console.log({ email, password });
 
-        axios.post(POST_SIGN_UP_PATH, { name, email, password })
-            .then((res) => {
-                console.log('signing up user')
-                res && res.status === 201 ?
-                    CurrentUser.updateCurrentUser(res.data.userId)
-                    : console.log('an error occured, status: ', res.status);
-            })
-            .catch((err) => {
-                console.log('registration failed ', err);
-            });
-    };
+        if (existingUser()) {
+            axios.post(PUT_SIGN_IN_PATH, { email, password })
+                .then((res) => {
+                    console.log('signing in user')
+                    res && res.status === 200 ?
+                        CurrentUser.updateCurrentUser(res.data.userId)
+                        : console.log('an error occured, status: ', res.status);
+                })
+                .catch((err) => {
+                    console.log('sign in failed ', err);
+                });
+        } else {
 
-    const handleNameChange = (event) => {
-        setName(event.target.value);
+        }
+
     };
 
     const handleEmailChange = (event) => {
@@ -49,25 +56,22 @@ function SignUp() {
             path="/signup"
             render={() => {
                 return CurrentUser.getCurrentUser() ?
-                    <Redirect to='/user'/> :  <Redirect to='/signup'/>
+                    <Redirect to='/user'/> :  <Redirect to='/signin'/>
             }}
         />
 
         <Card>
             <CardContent>
                 <form className='sign-up-form-wrapper' onSubmit={handleSubmit}>
-                    <h3>Sign Up</h3>
-                    <TextField id="outlined-basic" label="Name" variant="outlined" value={name} onChange={handleNameChange}/>
+                    <h3>Sign In</h3>
                     <TextField id="outlined-basic" label="Email" variant="outlined" type='email' value={email} onChange={handleEmailChange} required/>
-                    <TextField id="outlined-basic" label="Password" variant="outlined" type='password' value={password} onChange={handlePasswordChange} helperText="Make sure this is a good password" required/>
+                    <TextField id="outlined-basic" label="Password" variant="outlined" value={password} onChange={handlePasswordChange} helperText="Make sure this is a good password" required/>
                     <Button type='submit'>Submit</Button>
                 </form>
-                <span>
-
-                </span>
+                <AuthError error={error}/>
             </CardContent>
         </Card>
     </>
 }
 
-export default SignUp;
+export default SignIn;

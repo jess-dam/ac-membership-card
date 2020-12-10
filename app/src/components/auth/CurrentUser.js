@@ -1,5 +1,3 @@
-import React from 'react';
-
 const getCurrentUser = () => {
     return localStorage.getItem('currentUser');
 };
@@ -9,4 +7,6 @@ const updateCurrentUser = (userId) => {
     console.log('current user set to', localStorage.getItem('currentUser'));
 };
 
-export default { getCurrentUser, updateCurrentUser }
+const CurrentUser = { getCurrentUser, updateCurrentUser };
+
+export default CurrentUser;

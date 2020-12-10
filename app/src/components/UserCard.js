@@ -13,10 +13,8 @@ function UserCard (user) {
     const [ card, setCard ] = React.useState();
 
     const getCard = () => {
-        console.log(user.user._id);
         axios.get(GET_CARD_PATH)
         .then((res) => {
-            console.log(res.data.card);
             setCard(res.data.card);
         });
     }
@@ -28,12 +26,9 @@ function UserCard (user) {
         .catch(err => console.log('failed to register card ' + err));
     }
 
-    React.useEffect(() => {
-        getCard();
-    }, []);
-
     return <>
         <Card className='card'>
+            {getCard()}
             { card && user && user.user ?
                 <>
                     <CardContent className='card-details'>

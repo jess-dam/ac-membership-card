@@ -2,8 +2,10 @@ import React from 'react';
 import axios from 'axios';
 import UserCard from './UserCard';
 import './UserProfile.scss'
+import CurrentUser from './auth/CurrentUser';
+import { Route, Redirect } from 'react-router-dom';
 
-const GET_USER_PATH = 'http://localhost:3001/user/5fd1dfafba75a08186b7d15a';
+const GET_USER_PATH = `http://localhost:3001/user/${CurrentUser.getCurrentUser()}`;
 
 function UserProfile() {
     const [user, setUser] = React.useState();
@@ -21,6 +23,15 @@ function UserProfile() {
     }, []);
 
     return <div id='profile-wrapper'>
+        <Route
+            exact
+            path="/user"
+            render={() => {
+                return CurrentUser.getCurrentUser() ?
+                    <Redirect to='/user'/> :  <Redirect to='/signup'/>
+            }}
+        />
+
         { user ?
             <>
                 <div className='user-details'>
