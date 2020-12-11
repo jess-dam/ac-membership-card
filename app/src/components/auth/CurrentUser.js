@@ -1,12 +1,18 @@
+const CURRENT_USER = 'CURRENT_USER';
+
 const getCurrentUser = () => {
-    return localStorage.getItem('currentUser');
+    return localStorage.getItem(CURRENT_USER);
 };
 
 const updateCurrentUser = (userId) => {
-    localStorage.setItem('currentUser', userId);
-    console.log('current user set to', localStorage.getItem('currentUser'));
+    localStorage.setItem(CURRENT_USER, userId);
+    console.log('current user set to', localStorage.getItem(CURRENT_USER));
 };
 
-const CurrentUser = { getCurrentUser, updateCurrentUser };
+const revokeCurrentUser = () => {
+    localStorage.removeItem(CURRENT_USER);
+}
+
+const CurrentUser = { getCurrentUser, updateCurrentUser, revokeCurrentUser };
 
 export default CurrentUser;

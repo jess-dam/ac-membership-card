@@ -25,10 +25,10 @@ function UserProfile() {
     return <div id='profile-wrapper'>
         <Route
             exact
-            path="/user"
+            path="/"
             render={() => {
                 return CurrentUser.getCurrentUser() ?
-                    <Redirect to='/user'/> :  <Redirect to='/signup'/>
+                    <Redirect to='/'/> :  <Redirect to='/signin'/>
             }}
         />
 
@@ -47,6 +47,7 @@ function UserProfile() {
             <div className='user-details'>
                 <h1>User Profile</h1>
                 <h4>No user details available!</h4>
+                {CurrentUser.revokeCurrentUser()}
             </div>
         }
     </div>

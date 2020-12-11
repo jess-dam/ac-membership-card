@@ -21,7 +21,6 @@ describe('/user', () => {
         done();
     })
 
-
     describe('GET /:id', () => {
         describe('given an existing user', () => {
             let res, userId;
@@ -103,9 +102,64 @@ describe('/user', () => {
         });
     });
 
-    describe('PUT /signin', () => {});
+    describe('GET /validate', () => {
+        describe('given a vaild email and password', () => {
+            let res;
+            beforeAll(async (done) => {
+                await User.create(DEFAULT_USER);
+                res = await supertest(app).put('/user/validate').send({ email: DEFAULT_USER.email, password: DEFAULT_USER.password });
+                done();
+            });
 
-    describe('PUT /signout', () => {});
+            test('returns status 200', () => {
+                expect(res.status).toBe(201);
+            });
+
+            test('returns expected message', () => {
+                expect(res.body.status).toBe('success');
+                expect(res.body.message).toBe('User has been validated successfully');
+                expect(res.body.userId).toBeDefined();
+            })
+        });
+
+        describe('given a valid email and invalid password', () => {
+            let res;
+            beforeAll(async (done) => {
+                await User.create(DEFAULT_USER);
+                res = await supertest(app).put('/user/validate').send({ email: DEFAULT_USER.email, password: 'blah' });
+                done();
+            });
+
+            test('returns status 403', () => {
+                expect(res.status).toBe(403);
+            });
+
+            test('returns expected message', () => {
+                expect(res.body.status).toBe('failed');
+                expect(res.body.message).toBe('User is invalid');
+                expect(res.body.userId).not.toBeDefined();
+            })
+        });
+
+        describe('given an invalid email and password', () => {
+            let res;
+            beforeAll(async (done) => {
+                await User.create(DEFAULT_USER);
+                res = await supertest(app).put('/user/validate').send({ email: 'beetroot@purple.com', password: 'purple'});
+                done();
+            });
+
+            test('returns status 403', () => {
+                expect(res.status).toBe(403);
+            });
+
+            test('returns expected message', () => {
+                expect(res.body.status).toBe('failed');
+                expect(res.body.message).toBe('User is invalid');
+                expect(res.body.userId).not.toBeDefined();
+            })
+        });
+    });
 
     describe('/:id/card' , () => {
         describe('GET /', () => {

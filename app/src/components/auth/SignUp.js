@@ -49,7 +49,7 @@ function SignUp() {
             path="/signup"
             render={() => {
                 return CurrentUser.getCurrentUser() ?
-                    <Redirect to='/user'/> :  <Redirect to='/signup'/>
+                    <Redirect to='/'/> :  <Redirect to='/signup'/>
             }}
         />
 

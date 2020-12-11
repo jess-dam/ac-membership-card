@@ -11,35 +11,37 @@ import CurrentUser from './CurrentUser';
 import AuthError from './AuthError';
 
 function SignIn() {
-    const PUT_SIGN_IN_PATH = 'http://localhost:3001/user/signin';
+    const PUT_VALIDATE_PATH = 'http://localhost:3001/user/validate';
 
     const [ email, setEmail ] = React.useState('');
     const [ password, setPassword ] = React.useState('');
-    const [ error, setError ] = React.useState('');
-
-    const existingUser = () => {
-        setError('User does not exist');
-        return false;
-    }
+    const ERRORS = 'ERRORS';
 
     const handleSubmit = () => {
+        console.log('checking for existing user');
         console.log({ email, password });
-
-        if (existingUser()) {
-            axios.post(PUT_SIGN_IN_PATH, { email, password })
+        axios.post(PUT_VALIDATE_PATH, { email, password })
                 .then((res) => {
                     console.log('signing in user')
-                    res && res.status === 200 ?
-                        CurrentUser.updateCurrentUser(res.data.userId)
-                        : console.log('an error occured, status: ', res.status);
+                    console.log(res);
+                    localStorage.setItem('res', res.status);
+                    if (res && res.status === 201) {
+                       CurrentUser.updateCurrentUser(res.data.userId);
+                       sessionStorage.removeItem(ERRORS);
+                    } else {
+                        console.log('an error occured, status: ', res.status);
+                        sessionStorage.setItem(ERRORS, "Email or password was incorrect");
+                    }
                 })
                 .catch((err) => {
-                    console.log('sign in failed ', err);
+                    if (err.includes('400')) {
+                        sessionStorage.setItem(ERRORS, 'Email or password is missing');
+                    } else if (err.includes('403')) {
+                        sessionStorage.setItem(ERRORS, 'Email or password is incorrect');
+                    } else {
+                        sessionStorage.setItem(ERRORS, "Sorry, we couldn't sign you in: ", err);
+                    }
                 });
-        } else {
-
-        }
-
     };
 
     const handleEmailChange = (event) => {
@@ -53,22 +55,22 @@ function SignIn() {
     return <>
         <Route
             exact
-            path="/signup"
+            path="/signin"
             render={() => {
                 return CurrentUser.getCurrentUser() ?
-                    <Redirect to='/user'/> :  <Redirect to='/signin'/>
+                    <Redirect to='/'/> :  <Redirect to='/signin'/>
             }}
         />
 
         <Card>
             <CardContent>
-                <form className='sign-up-form-wrapper' onSubmit={handleSubmit}>
+                <form className='sign-up-form-wrapper'>
                     <h3>Sign In</h3>
-                    <TextField id="outlined-basic" label="Email" variant="outlined" type='email' value={email} onChange={handleEmailChange} required/>
-                    <TextField id="outlined-basic" label="Password" variant="outlined" value={password} onChange={handlePasswordChange} helperText="Make sure this is a good password" required/>
-                    <Button type='submit'>Submit</Button>
+                    <TextField label="Email" variant="outlined" type='email' value={email} onChange={handleEmailChange} required/>
+                    <TextField label="Password" variant="outlined" value={password} type='password' onChange={handlePasswordChange} required/>
+                    <Button type='submit' className='sign-up-form-submit' onClick={handleSubmit}>Submit</Button>
                 </form>
-                <AuthError error={error}/>
+                <AuthError error={sessionStorage.getItem(ERRORS)}/>
             </CardContent>
         </Card>
     </>

@@ -26,9 +26,12 @@ function UserCard (user) {
         .catch(err => console.log('failed to register card ' + err));
     }
 
+    React.useEffect(() => {
+        getCard();
+    },[]);
+
     return <>
         <Card className='card'>
-            {getCard()}
             { card && user && user.user ?
                 <>
                     <CardContent className='card-details'>

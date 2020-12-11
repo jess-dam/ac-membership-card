@@ -13,7 +13,7 @@ describe('User', () => {
         await mongoose.connect(url, { useNewUrlParser: true });
     });
     describe('can do basic db operations', () => {
-        beforeAll( async (done) => {
+        beforeEach( async (done) => {
             await UserModel.deleteMany({});
             done();
         });
@@ -26,6 +26,16 @@ describe('User', () => {
 
             expect(allUsers).toHaveLength(1);
             expect(user.createdAt).toBeDefined();
+        });
+
+        test('can create a user with admin access', async (done) => {
+            const user = await UserModel.create({...DEFAULT_USER, access: 'ADMIN'});
+            const allUsers = await UserModel.find({});
+
+            done();
+
+            expect(allUsers).toHaveLength(1);
+            expect(user.access).toBe('ADMIN');
         });
     });
 });

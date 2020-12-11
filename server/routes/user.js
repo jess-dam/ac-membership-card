@@ -4,12 +4,12 @@ const UserControl = require('./controllers/user.control');
 const CardControl = require('./controllers/card.control');
 
 // User
-router.get('/:id', UserControl.getUser);
 
 router.post('/signup', UserControl.signUp);
 
-// router.put('/signin', UserControl.signIn);
+router.put('/validate', UserControl.validateUser);
 
+router.get('/:id', UserControl.getUser);
 // router.put('/signout', UserControl.signOut);
 
 
