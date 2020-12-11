@@ -1,5 +1,6 @@
 const express = require('express');
 const User = require('../../models/user/user.model');
+const Card = require('../../models/card/card.model');
 
 const getUser = async (req, res, next) => {
     if (!req.params.id) {
@@ -62,7 +63,6 @@ const signUp = async (req, res, next) => {
 
 const validateUser = async (req, res, next) => {
     const { email, password } = req.body;
-    console.log(req.body);
     if (!email || !password) {
         console.log('email or password is missing');
         res.status(400).json({
@@ -75,7 +75,6 @@ const validateUser = async (req, res, next) => {
 
     try {
         const user = (await User.find({ email }))[0]; // Get the first user found by email
-        console.log(user);
         if (user && user.password === password) {
             res.status(201).json({
                 status: 'success',
@@ -83,7 +82,6 @@ const validateUser = async (req, res, next) => {
                 userId: user._id
             });
         } else {
-            console.log(user)
             res.status(403).json({
                 status: 'failed',
                 message: 'User is invalid'
@@ -100,5 +98,21 @@ const validateUser = async (req, res, next) => {
 
 };
 
+const getAllUsers = async (req,res,next) => {
+    try {
+        let allUsers = await User.find({});
 
-module.exports = { getUser, signUp, validateUser };
+        res.status(200).json({
+            status: 'success',
+            message: 'Retrieved all users',
+            allUsers
+        });
+    } catch {
+        res.status(500).json({
+            status:'failed',
+            message: 'Could not retrieve users'
+        })
+    }
+}
+
+module.exports = { getUser, signUp, validateUser, getAllUsers};

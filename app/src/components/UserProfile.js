@@ -41,7 +41,7 @@ function UserProfile() {
                             <h4>Email </h4><p>{user.email}</p>
                             <h4>Member Since </h4><p>{user.createdAt}</p>
                 </div>
-                <UserCard className='card' user={user}/>
+                <UserCard className='card' user={user} isAdmin={false}/>
             </>
             :
             <div className='user-details'>

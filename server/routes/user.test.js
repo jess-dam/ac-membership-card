@@ -10,6 +10,12 @@ const DEFAULT_USER = {
     password: 'gimmedatbellmoney'
 }
 
+const DEFAULT_USER_2 = {
+    name: 'Tom',
+    email: 'tomnook@leafmail.com',
+    password: 'gimmedatbellmoney'
+}
+
 beforeAll(async () => {
     const url = `mongodb://127.0.0.1/ac-membership-test-models`
     await mongoose.connect(url, { useNewUrlParser: true });
@@ -21,6 +27,36 @@ describe('/user', () => {
         done();
     })
 
+    describe('GET /all', () => {
+        describe('given existing users', () => {
+            let res;
+            beforeAll(async (done) => {
+                await User.deleteMany({});
+                let userId = (await User.create(DEFAULT_USER))._id;
+                await User.create(DEFAULT_USER_2);
+                let card = await Card.create({});
+                await User.findByIdAndUpdate(userId, { cardId: card._id });
+
+                res = await supertest(app).get(`/user/all`);
+                done();
+            });
+
+            test('returns status 200', () => {
+                expect(res.status).toBe(200);
+            });
+
+            test('returns expected message', () => {
+                expect(res.body.status).toBe('success');
+                expect(res.body.message).toBe('Retrieved all users');
+            });
+
+            test('returns all users', () => {
+                expect(res.body.allUsers).toHaveLength(2);
+            })
+
+        });
+    })
+
     describe('GET /:id', () => {
         describe('given an existing user', () => {
             let res, userId;
@@ -30,6 +66,7 @@ describe('/user', () => {
                 res = await supertest(app).get(`/user/${userId}`);
                 done();
             });
+
             test('returns status 200', () => {
                 expect(res.status).toBe(200);
             });
@@ -264,7 +301,32 @@ describe('/user', () => {
 
         describe('DELETE /remove', () => {});
 
-        describe('PUT /points', () => {});
+        describe('PUT /points', () => {
+            describe('Can update card points', () => {
+                let userId, res, updatedCard;
+                beforeAll(async (done) => {
+                    // Given a user with a card
+                    userId = (await User.create(DEFAULT_USER))._id;
+                    let cardId =  (await Card.create({}))._id; // default points is zero
+                    await User.findByIdAndUpdate(userId, { cardId });
+                    res = await supertest(app).put(`/user/${userId}/card/points`).send({ cardId, pointsToAdd
+                        : 2 });
+                    updatedCard = await Card.findById(cardId);
+                    done();
+                });
+
+                test('returns status 201', () => {
+                    expect(res.status).toBe(201);
+                });
+                test('returns expected message', () => {
+                    expect(res.body.status).toBe('success');
+                    expect(res.body.message).toBe('User points updated');
+                });
+                test('updates card points by 2', () => {
+                    expect(updatedCard.points).toBe(2);
+                });
+            });
+        });
     });
 
 });

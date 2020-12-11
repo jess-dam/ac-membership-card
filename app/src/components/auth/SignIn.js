@@ -20,7 +20,7 @@ function SignIn() {
     const handleSubmit = () => {
         console.log('checking for existing user');
         console.log({ email, password });
-        axios.post(PUT_VALIDATE_PATH, { email, password })
+        axios.put(PUT_VALIDATE_PATH, { email, password })
                 .then((res) => {
                     console.log('signing in user')
                     console.log(res);

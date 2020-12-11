@@ -53,12 +53,25 @@ const createCard = async (req, res, next) => {
     }
 };
 
-const removeCard = (req, res, next) => {
+const removeCard = async (req, res, next) => {
 
 };
 
-const updatePoints = (req, res, next) => {
-
+const addPoints = async (req, res, next) => {
+    const { cardId, pointsToAdd } = req.body;
+    try {
+        let currentPoints = (await Card.findById(cardId)).points;
+        await Card.findByIdAndUpdate(cardId, { points: (pointsToAdd + currentPoints) });
+        res.status(201).json({
+            status: 'success',
+            message: 'User points updated'
+        });
+    } catch (err) {
+        res.status(500).json({
+            status: 'failed',
+            message: 'Could not update user points: ' + err
+        });
+    }
 };
 
-module.exports = { getCard, createCard, removeCard, updatePoints };
+module.exports = { getCard, createCard, removeCard, addPoints };
