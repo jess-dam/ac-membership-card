@@ -12,8 +12,16 @@
     flex-flow: row wrap;
     justify-content: space-evenly;
     padding: 20px;
+    margin-top: 80px;
+    border-radius: 10px;;
+    background-color: #bea87e;
 }
 
 .card {
     align-self: center;
+}
+
+.container {
+    width: 100%;
+    background-color: #bea87e;
 }

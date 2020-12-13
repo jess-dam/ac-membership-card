@@ -25,13 +25,9 @@ function SignIn() {
                     console.log('signing in user')
                     console.log(res);
                     localStorage.setItem('res', res.status);
-                    if (res && res.status === 201) {
-                       CurrentUser.updateCurrentUser(res.data.userId);
-                       sessionStorage.removeItem(ERRORS);
-                    } else {
-                        console.log('an error occured, status: ', res.status);
-                        sessionStorage.setItem(ERRORS, "Email or password was incorrect");
-                    }
+                    CurrentUser.updateCurrentUser(res.data.userId);
+                    sessionStorage.removeItem(ERRORS);
+
                 })
                 .catch((err) => {
                     if (err.includes('400')) {
@@ -53,6 +49,7 @@ function SignIn() {
     };
 
     return <>
+        {console.log(CurrentUser.getCurrentUser())}
         <Route
             exact
             path="/signin"

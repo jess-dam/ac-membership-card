@@ -1,0 +1,53 @@
+.container {
+    background-color: #976c50;
+    min-width: 100%;
+    height: auto;
+    position: fixed;
+    top: 0;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 20px;
+}
+
+.link {
+    color: white;
+    padding: 10px;
+    font-size: 0.6em;
+    align-self: center;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    :hover {
+        color: #79d392;
+    }
+
+}
+
+.logo {
+    margin: 0 auto;
+    font-size: 2rem;
+    background-image: url('../media/Animal_Crossing_Leaf.png');
+    background-size: contain;
+    background-position-y: bottom;
+    background-repeat: no-repeat;
+    height: 40px;
+    width: 40px;
+}
+
+.nav-title {
+    color: white;
+    font-size: 0.8em;
+    font-weight: 700;
+    align-self: center;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0px 20px 0px 20px;
+
+    &-sub {
+        font-size: 0.6em;
+        color: white;
+        align-self: center;
+        font-weight: 500;
+    }
+
+}

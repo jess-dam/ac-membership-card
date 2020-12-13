@@ -5,6 +5,9 @@ import './UserProfile.scss'
 import CurrentUser from './auth/CurrentUser';
 import { Route, Redirect } from 'react-router-dom';
 
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+
 const GET_USER_PATH = `http://localhost:3001/user/${CurrentUser.getCurrentUser()}`;
 
 function UserProfile() {
@@ -20,7 +23,7 @@ function UserProfile() {
 
     React.useEffect(() => {
         getUser();
-    }, []);
+    }, [CurrentUser.getCurrentUser()]);
 
     return <div id='profile-wrapper'>
         <Route
@@ -32,24 +35,24 @@ function UserProfile() {
             }}
         />
 
-        { user ?
-            <>
+            { user ?
+                <>
+                    <div className='user-details'>
+                        <h1>User Profile</h1>
+
+                                <h4>Name </h4><p>{user.name}</p>
+                                <h4>Email </h4><p>{user.email}</p>
+                                <h4>Member Since </h4><p>{user.createdAt}</p>
+                    </div>
+                    <UserCard className='card' user={{...user, isViewingAsAdmin: false}}/>
+                </>
+                :
                 <div className='user-details'>
                     <h1>User Profile</h1>
-
-                            <h4>Name </h4><p>{user.name}</p>
-                            <h4>Email </h4><p>{user.email}</p>
-                            <h4>Member Since </h4><p>{user.createdAt}</p>
+                    <h4>No user details available!</h4>
                 </div>
-                <UserCard className='card' user={user} isAdmin={false}/>
-            </>
-            :
-            <div className='user-details'>
-                <h1>User Profile</h1>
-                <h4>No user details available!</h4>
-                {CurrentUser.revokeCurrentUser()}
-            </div>
-        }
+            }
+
     </div>
 }
 

@@ -1,0 +1,23 @@
+.all-users {
+    margin: 50px;
+    text-align: left;
+    width: 100%;
+    height: auto;
+
+    &_user {
+        margin: 20px;
+        padding: 20px;
+        width: 80%;
+        background-color: #ccbfa8;
+        border-radius: 10px;
+    }
+
+    &_header {
+        font-weight: 700;
+        text-align: left;
+    }
+
+    &_main-header {
+        padding: 20px;
+    }
+}

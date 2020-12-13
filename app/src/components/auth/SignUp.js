@@ -22,9 +22,7 @@ function SignUp() {
         axios.post(POST_SIGN_UP_PATH, { name, email, password })
             .then((res) => {
                 console.log('signing up user')
-                res && res.status === 201 ?
-                    CurrentUser.updateCurrentUser(res.data.userId)
-                    : console.log('an error occured, status: ', res.status);
+                CurrentUser.updateCurrentUser(res.data.userId);
             })
             .catch((err) => {
                 console.log('registration failed ', err);

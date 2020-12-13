@@ -3,6 +3,7 @@ import CurrentUser from './auth/CurrentUser';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import axios from 'axios';
+import './AllUsers.scss';
 
 import UserCard from './UserCard';
 
@@ -22,26 +23,24 @@ function AllUsers () {
         getUsers();
     }, []);
 
-    return <>
-        <h2>Users</h2>
+    return <div className='all-users'>
+        <h2 className='all-users_main-header'>Users</h2>
         { users ?
-            <>
-                <h5>Think anyone's been an especially loyal customer? Give them some points to show your appreciation!</h5>
+            <div>
+                <h5 className='all-users_main-header'>Think anyone's been an especially loyal customer? Give them some points to show your appreciation!</h5>
                 { users.map((user) => {
-                    return <Card>
-                        <CardContent>
-                            <p>{user.name}</p>
-                            <UserCard user={user} isAdmin={true}/>
-                        </CardContent>
-                    </Card>
+                    return <div className='all-users_user'>
+                            <h5 className='all-users_header'>{user.name}</h5>
+                            <UserCard user={{...user, isViewingAsAdmin: true }}/>
+                    </div>
                 }) }
-            </>
+            </div>
 
             : <h5>No users available</h5>
         }
 
 
-    </>
+    </div>
 
 }
 

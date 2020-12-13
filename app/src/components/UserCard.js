@@ -8,7 +8,7 @@ import './UserCard.scss';
 import axios from 'axios';
 
 
-function UserCard (user, isAdmin) {
+function UserCard (user) {
     const GET_CARD_PATH = `http://localhost:3001/user/${user.user._id}/card`;
     const POST_CARD_PATH  = GET_CARD_PATH + '/register';
     const PUT_CARD_POINTS_PATH = GET_CARD_PATH + '/points';
@@ -49,7 +49,7 @@ function UserCard (user, isAdmin) {
             { card && user && user.user ?
                 <>
                     <CardContent className='card-details'>
-                        { !isAdmin ?
+                        { !user.user.isViewingAsAdmin ?
                             <>
                                 <h4>Leaf Loyalty Card</h4>
                                 <h5>{user.user.name}</h5>
@@ -58,19 +58,19 @@ function UserCard (user, isAdmin) {
                         }
                         <h5><span>{card.points}</span> points</h5>
                     </CardContent>
-                    { isAdmin ?
-                            <>
+                    { user.user.isViewingAsAdmin ?
+                            <div className='card-points-input'>
                                 <TextField label='points to add' value={pointsToAdd} onChange={handlePointsChange}/>
                                 <Button onClick={addPoints}>Add Points</Button>
-                            </>
+                            </div>
                         : <></>
                     }
                 </>
             :
                 <>
                     <CardContent className='card-no-details'>
-                    <h5>{isAdmin ? user.name : 'You'} don't have a card at the moment, would you like to register one?</h5>
-                        <Button onClick={registerCard}>Make me a card please</Button>
+                    <h5>{user.user.isViewingAsAdmin ? (user.user.name + ` doesn't`) : `You don't`} have a card at the moment, would you like to register one?</h5>
+                        <Button onClick={registerCard}>Make a card please</Button>
                     </CardContent>
                 </>
             }
