@@ -8,6 +8,7 @@ import { Redirect, Route } from 'react-router-dom';
 
 import axios from 'axios';
 import CurrentUser from './CurrentUser';
+import './SignUp.scss';
 
 function SignUp() {
     const POST_SIGN_UP_PATH = 'http://localhost:3001/user/signup';
@@ -55,10 +56,10 @@ function SignUp() {
             <CardContent>
                 <form className='sign-up-form-wrapper' onSubmit={handleSubmit}>
                     <h3>Sign Up</h3>
-                    <TextField id="outlined-basic" label="Name" variant="outlined" value={name} onChange={handleNameChange}/>
-                    <TextField id="outlined-basic" label="Email" variant="outlined" type='email' value={email} onChange={handleEmailChange} required/>
-                    <TextField id="outlined-basic" label="Password" variant="outlined" type='password' value={password} onChange={handlePasswordChange} helperText="Make sure this is a good password" required/>
-                    <Button type='submit'>Submit</Button>
+                    <TextField id="outlined-basic" label="Name" className='sign-up-form-section' variant="outlined" value={name} onChange={handleNameChange}/>
+                    <TextField id="outlined-basic" label="Email" className='sign-up-form-section' variant="outlined" type='email' value={email} onChange={handleEmailChange} required/>
+                    <TextField id="outlined-basic" label="Password" className='sign-up-form-section' variant="outlined" type='password' value={password} onChange={handlePasswordChange} helperText="Make sure this is a good password" required/>
+                    <Button type='submit' className='sign-up-form-submit'>Submit</Button>
                 </form>
                 <span>
 

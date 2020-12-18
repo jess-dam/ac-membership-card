@@ -4,6 +4,7 @@ import UserCard from './UserCard';
 import './UserProfile.scss'
 import CurrentUser from './auth/CurrentUser';
 import { Route, Redirect } from 'react-router-dom';
+import moment from 'moment';
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -42,7 +43,7 @@ function UserProfile() {
 
                                 <h4>Name </h4><p>{user.name}</p>
                                 <h4>Email </h4><p>{user.email}</p>
-                                <h4>Member Since </h4><p>{user.createdAt}</p>
+                                <h4>Member Since </h4><p>{moment(user.createdAt).fromNow()}</p>
                     </div>
                     <UserCard className='card' user={{...user, isViewingAsAdmin: false}}/>
                 </>

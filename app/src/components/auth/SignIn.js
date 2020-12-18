@@ -10,6 +10,8 @@ import axios from 'axios';
 import CurrentUser from './CurrentUser';
 import AuthError from './AuthError';
 
+import './SignUp.scss';
+
 function SignIn() {
     const PUT_VALIDATE_PATH = 'http://localhost:3001/user/validate';
 
@@ -60,7 +62,7 @@ function SignIn() {
         />
 
         <Card>
-            <CardContent>
+            <CardContent className='sign-up-form'>
                 <form className='sign-up-form-wrapper'>
                     <h3>Sign In</h3>
                     <TextField label="Email" variant="outlined" type='email' value={email} onChange={handleEmailChange} required/>
